@@ -6,18 +6,27 @@ Este é um arquivo de script temporário.
 """
 
 import numpy as np
-import random
+#import random
 
 
 parent_1 = np.random.choice([0, 1], size=(10,), p=[1./3, 2./3])
 parent_2 = np.random.choice([0, 1], size=(10,), p=[1./3, 2./3])
 
 ### CROSSOVER ###
-def single_point_crossover(parent_1, parent_2):
-    prob_crossover = 0.8
-    random_value = np.random.uniform(0,1,1)
+def single_point_crossover(parent_1, parent_2, prob_crossover, random_value, random_position):
+    """
+        Single point crossover. Create a new generation based on parents.
+        Args:
+        parents_1/2 (np): input data
+        prob_crossover: indicate the propability of crossover for parents
+        random_value: Generate a random probability to crossover
+        random_position: Indicate a position point for crossover
+        Returns:
+        new_generation: generated population
+    """
+    #random_value =  random_prob # np.random.uniform(0,1,1)
     if(prob_crossover >= random_value):
-        change_position = random.randint(1,len(parent_1)-1)
+        change_position =  random_position # random.randint(1,len(parent_1)-1)
         
         child_1 = np.hstack([parent_1[:change_position],parent_2[change_position:]])
         child_2 = np.hstack([parent_2[:change_position],parent_1[change_position:]])
@@ -27,10 +36,20 @@ def single_point_crossover(parent_1, parent_2):
         return(parent_1, parent_2)
         
         
-def uniform_crossover(parent_1, parent_2, prob_crossover):
-    random_value = np.random.uniform(0,1,1)
+def uniform_crossover(parent_1, parent_2, prob_crossover, random_value, random_vector):
+    """
+        Uniform_crossover. Create a new generation based on auxiliary vector.
+        Args:
+        parents_1/2 (np): input data
+        prob_crossover: indicate the propability of crossover for parents
+        random_value: Generate a random probability to crossover
+        random_vector: Auxiliary vector to crossover
+        Returns:
+        new_generation: generated population
+    """
+    #random_value = np.random.uniform(0,1,1)
     if(prob_crossover >= random_value):
-        random_vector = np.random.choice([0, 1], size=(len(parent_1),))
+        #random_vector = np.random.choice([0, 1], size=(len(parent_1),))
         
         def create_child(p1,p2,rv):
             if(rv>0):
@@ -45,6 +64,7 @@ def uniform_crossover(parent_1, parent_2, prob_crossover):
         return(child_1,child_2)
     else:
         return(parent_1, parent_2)
+        
 
 ### MUTATION ###
 def bit_inversion_mutation(individual, prob_mutation):
@@ -60,6 +80,7 @@ def bit_inversion_mutation(individual, prob_mutation):
     new_individual = vfunc(individual,random_vector, prob_mutation)
     
     return(new_individual)
+    
 
 ### MATING SELECTION ###
 def roulette_selection(fitness, num_mating):
@@ -108,14 +129,14 @@ def generate_offspring(population):
     return children
 
     
-population = Solution(np.random.randint(2, size=(20,10)), np.random.randint(10, size=(10,1)), np.arange(0,10))
-pop = population.solution
-fitness = population.fitness
-seq = population.seq
-
-class Solution:
-    def __init__(self, solution, fitness, seq):
-        self.solution = solution
-        self.fitness= fitness
-        self.seq= seq
+#population = Solution(np.random.randint(2, size=(20,10)), np.random.randint(10, size=(10,1)), np.arange(0,10))
+#pop = population.solution
+#fitness = population.fitness
+#seq = population.seq
+#
+#class Solution:
+#    def __init__(self, solution, fitness, seq):
+#        self.solution = solution
+#        self.fitness= fitness
+#        self.seq= seq
     
