@@ -33,6 +33,15 @@ class TestGavectorize(unittest.TestCase):
         
         self.assertListEqual(list(childs[0]), [0, 0, 0, 1, 0, 1, 0, 1, 1, 1])
         self.assertListEqual(list(childs[1]), [1, 1, 0, 1, 1, 1, 1, 0, 0, 0])
+        
+    def test_bit_inversion_mutation(self):
+        individual = [0, 0, 0, 1, 1, 1, 1, 1, 1, 0]
+        prob_vector = [0.3, 0.55, 0.6, 0.2, 0.8, 0.6, 0.3, 0.4, 0.7, 0.9]
+        prob_mutation = 0.5
+        
+        new_individual = sup_f.bit_inversion_mutation(individual, prob_mutation, prob_vector)
+        
+        self.assertListEqual(list(new_individual), [1, 0, 0, 0, 1, 1, 0, 0, 1, 0])
     
     
 if __name__ == '__main__':
