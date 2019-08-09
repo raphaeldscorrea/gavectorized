@@ -26,10 +26,10 @@ def single_point_crossover(parent_1, parent_2, prob_crossover, random_value, ran
     """
     #random_value =  random_prob # np.random.uniform(0,1,1)
     if(prob_crossover >= random_value):
-        change_position =  random_position # random.randint(1,len(parent_1)-1)
+        #change_position =  random_position # random.randint(1,len(parent_1)-1)
         
-        child_1 = np.hstack([parent_1[:change_position],parent_2[change_position:]])
-        child_2 = np.hstack([parent_2[:change_position],parent_1[change_position:]])
+        child_1 = np.hstack([parent_1[:random_position],parent_2[random_position:]])
+        child_2 = np.hstack([parent_2[:random_position],parent_1[random_position:]])
         
         return(child_1,child_2)
     else:
@@ -67,8 +67,17 @@ def uniform_crossover(parent_1, parent_2, prob_crossover, random_value, random_v
         
 
 ### MUTATION ###
-def bit_inversion_mutation(individual, prob_mutation):
-    random_vector = np.random.uniform(0,1,len(individual))
+def bit_inversion_mutation(individual, prob_mutation, prob_vector):
+    """
+        bit_inversion_mutation reproduce a mutation action based on a prob vector.
+        Args:
+        individual (np): input data
+        prob_mutation: indicate the propability of mutation for each element in individual vector.
+        prob_vector: Generate a random probability vector to mutation
+        Returns:
+        new_individual: generated new individual after mutation process
+    """
+    #random_vector = np.random.uniform(0,1,len(individual))
     
     def mutate_individual(ind, vec_prob, prob_mutation):
         if(vec_prob < prob_mutation):
@@ -77,7 +86,7 @@ def bit_inversion_mutation(individual, prob_mutation):
             return ind
         
     vfunc = np.vectorize(mutate_individual)
-    new_individual = vfunc(individual,random_vector, prob_mutation)
+    new_individual = vfunc(individual,prob_vector, prob_mutation)
     
     return(new_individual)
     
