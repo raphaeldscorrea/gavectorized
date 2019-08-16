@@ -7,7 +7,7 @@ Created on Wed Aug 14 09:40:06 2019
 """
 import sys, os
 import  unittest
-sys.path.append(os.path.abspath(os.path.join('..', 'src')))
+sys.path.append(os.path.abspath(os.path.join('..', 'src/ga_vectorized')))
 from permutation_ga import crossover_permutation
 
 # Try to implement crossover operator for permutation problem

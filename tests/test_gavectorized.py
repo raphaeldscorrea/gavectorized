@@ -7,7 +7,7 @@ Created on Thu Aug  8 18:49:44 2019
 """
 import sys, os
 import unittest 
-sys.path.append(os.path.abspath(os.path.join('..', 'src')))
+sys.path.append(os.path.abspath(os.path.join('..', 'src/ga_vectorized')))
 import support_functions as sup_f
 
 
