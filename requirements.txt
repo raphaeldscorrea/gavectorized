@@ -1,0 +1,10 @@
+# Add your pinned requirements so that they can be eadilly installed with:
+# pip install -r requirements.txt
+# Remember to also add them is setup.cfg but unpinned.
+
+# Example:
+# numpy
+# copy
+
+numpy
+copy
