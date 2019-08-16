@@ -5,10 +5,10 @@ Created on Thu Aug  8 18:49:44 2019
 
 @author: rodolfodollinger
 """
-
+import sys, os
 import unittest 
+sys.path.append(os.path.abspath(os.path.join('..', 'src')))
 import support_functions as sup_f
-
 
 
 class TestGavectorize(unittest.TestCase):
