@@ -11,7 +11,7 @@ sys.path.append(os.path.abspath(os.path.join('..', 'src/ga_vectorized')))
 import support_functions as sup_f
 
 
-class TestGavectorize(unittest.TestCase):
+class TestBinOperators(unittest.TestCase):
 
         
     def test_single_point_crossover(self):
