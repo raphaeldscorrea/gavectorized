@@ -2,13 +2,11 @@
 
 import numpy as np
 
-def roulette_selection(fitness, num_mating):
-    fitness_array = fitness.flatten()
-    total_fitness = sum(fitness_array)
+def roulette_selection(fitness, num_mating, random_vector):
+    total_fitness = sum(fitness)
     
-    sorted_fitness = np.array(sorted(fitness_array, reverse = True))
-    sorted_index = np.array(sorted(range(len(fitness_array)),key=fitness_array.__getitem__, reverse = True))
-    total_fitness = sum(sorted_fitness)
+    sorted_fitness = np.array(sorted(fitness, reverse = True))
+    sorted_index = np.array(sorted(range(len(fitness)),key=fitness.__getitem__, reverse = True))
     
     def set_prob_fitness(sf, tf):
         return(sf/tf)
@@ -20,7 +18,6 @@ def roulette_selection(fitness, num_mating):
     prev_fitness = np.append(0,cum_fitness)
     prev_fitness = prev_fitness[:-1]
     
-    random_vector = np.random.uniform(0,1,num_mating)
     
     def get_mating(rv):
         return(list(map(lambda x: x>rv, cum_fitness)).index(True))
