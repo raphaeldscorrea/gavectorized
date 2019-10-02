@@ -43,13 +43,17 @@ def inversion_mutation(offspring):
     
     return(new_offspring)
     
-def displacement_mutation(offspring):
-    lb = random.randint(0,len(offspring))
-    ub = random.randint(lb,len(offspring))
-    position = random.randint(0,lb)
+def displacement_mutation(offspring, prob_mutation):
+    random_value = np.random.uniform(0,1,1)
     
-    new_offspring = np.hstack([offspring[:position], offspring[lb:ub], offspring[position:lb], offspring[ub:len(offspring)]])
-    
+    if(random_value <= prob_mutation):
+        lb = random.randint(0,len(offspring))
+        ub = random.randint(lb,len(offspring))
+        position = random.randint(0,lb)
+        
+        new_offspring = np.hstack([offspring[:position], offspring[lb:ub], offspring[position:lb], offspring[ub:len(offspring)]])
+    else:
+        new_offspring = offspring
     return(new_offspring)
     
 #### CROSSOVER ####
@@ -78,15 +82,25 @@ def order_crossover(parent_1, parent_2):
     lb = random.randint(0,len(parent_1))
     ub = random.randint(lb,len(parent_1))
     
+    #parent_1
     part_1_offspring_1 = parent_1[lb:ub]
     
     parent_2_reshaped = np.hstack([parent_2[ub:len(parent_2)], parent_2[:ub]])
     index_repeated_elements = np.isin(parent_2_reshaped, part_1_offspring_1, invert=True)
     repeated_values_part_1 = parent_2_reshaped[index_repeated_elements]
     
-    new_offspring = np.hstack([repeated_values_part_1[len(parent_2)-ub:len(repeated_values_part_1)], part_1_offspring_1,repeated_values_part_1[:len(parent_2)-ub]])
+    new_offspring_1 = np.hstack([repeated_values_part_1[len(parent_2)-ub:len(repeated_values_part_1)], part_1_offspring_1,repeated_values_part_1[:len(parent_2)-ub]])
     
-    return(new_offspring)
+    #parent_2
+    part_1_offspring_2 = parent_2[lb:ub]
+    
+    parent_1_reshaped = np.hstack([parent_1[ub:len(parent_1)], parent_1[:ub]])
+    index_repeated_elements = np.isin(parent_1_reshaped, part_1_offspring_2, invert=True)
+    repeated_values_part_2 = parent_1_reshaped[index_repeated_elements]
+    
+    new_offspring_2 = np.hstack([repeated_values_part_2[len(parent_1)-ub:len(repeated_values_part_2)], part_1_offspring_2,repeated_values_part_2[:len(parent_1)-ub]])
+    
+    return(new_offspring_1, new_offspring_2)
     
 def cycle_crossover(parent_1, parent_2):
     idx_1 = []
