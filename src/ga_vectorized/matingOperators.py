@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
+import time
 
 def roulette_selection(fitness, num_mating, random_vector):
     total_fitness = sum(fitness)
@@ -18,9 +19,8 @@ def roulette_selection(fitness, num_mating, random_vector):
     prev_fitness = np.append(0,cum_fitness)
     prev_fitness = prev_fitness[:-1]
     
-    
     def get_mating(rv):
-        return(list(map(lambda x: x>rv, cum_fitness)).index(True))
+        return((np.abs(cum_fitness - rv)).argmin())
     
     vfunc2 = np.vectorize(get_mating)
     mating_selected = vfunc2(random_vector)
