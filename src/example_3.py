@@ -30,9 +30,9 @@ def generate_offspring(population, fitness, func_parents_selection, func_crossov
     return children
 
 #@jit()
-def next_generation(population, prob_crossover, prob_mutation):
+def next_generation(population, prob_crossover, prob_mutation, example_3_ga):
     start = time.time()
-    fitness = np.array([getFitness(x) for x in population]).reshape((len(population),))
+    fitness = np.array([example_3_ga.getFitness(x) for x in population]).reshape((len(population),))
 
     #p = multiprocessing.Pool(4)
     #population_list = population.tolist()
@@ -45,7 +45,7 @@ def next_generation(population, prob_crossover, prob_mutation):
     prob_mutation_vector = np.full((len(population),),prob_mutation)
     children_mutated = np.array([permOperators.displacement_mutation(x,y) for x,y in zip(children,prob_mutation_vector)]).reshape((len(population),len(population[0])))
     mutation_time = time.time()
-    fitness_children = np.array([getFitness(x) for x in children_mutated]).reshape((len(population),))
+    fitness_children = np.array([example_3_ga.getFitness(x) for x in children_mutated]).reshape((len(population),))
     fitness_children_time = time.time()
     new_generation = survivorOperators.fitness_based_replacement(fitness, fitness_children, population, children_mutated)
     end = time.time()
@@ -59,44 +59,40 @@ def next_generation(population, prob_crossover, prob_mutation):
     
     return(new_generation)
     
-def genetic_algorithm(population, generations):
+def genetic_algorithm(population, generations, example_3_ga):
     #distance_matrix = np.random.random((80, 80))
     for i in range(0, generations):
         print(i)
-        population.Genes = next_generation(population.Genes, 0.8, 0.05)
+        population = next_generation(population, 0.8, 0.05, example_3_ga)
         
-    return(population.Genes)
+    return(population)
 
-class Chromosome:
-    def __init__(self, genes, fitness):
-        self.Genes = genes
-        self.Fitness = fitness
-
-
+class fitnessCalculation():
+    def __init__(self):
+        self.distance_matrix = distance_matrix = np.random.random((80, 80))
+        
+    def getFitness(self, individual):
+        shift_individual = np.hstack([individual[1:len(individual)], individual[0]]) 
+        total_distance = sum(map(lambda x,y: self.distance_matrix[x][y], individual, shift_individual))
+        return(-total_distance)
+    
+    
+    
 ### TEST ####
 
 if __name__ == '__main__':
-    population = Chromosome(np.zeros((800, 80)), np.random.randint(10, size=(800,1)))    
-    for i in range(0, len(population.Genes)):
-        population.Genes[i,:] = np.random.permutation(np.arange(population.Genes.shape[1]))[:population.Genes.shape[1]]
+    population = np.zeros((800, 80))
+                                                        
+    for i in range(0, len(population)):
+        population[i,:] = np.random.permutation(np.arange(population.shape[1]))[:population.shape[1]]
     
-    population.Genes = population.Genes.astype(int)
-    distance_matrix = np.random.random((80, 80))
+    population = population.astype(int)
     
-    def getFitness(individual):
-        aux_individual = np.hstack([individual[1:len(individual)], individual[0]])
-        
-        def get_distances(x,y):
-            return(distance_matrix[x][y])
-            
-        vfunc = np.vectorize(get_distances)
-        total_distance = sum(vfunc(individual,aux_individual))
-        
-        return(-total_distance)
+    example_3_ga = fitnessCalculation()
 
-    solution = genetic_algorithm(population,20)
+    solution = genetic_algorithm(population,20, example_3_ga)
+    
+###########################
     
 
- 
-    
-    
+        
